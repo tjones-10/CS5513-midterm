@@ -1,17 +1,17 @@
 "use server";
 
-import { addReviewToRestaurant } from "@/src/lib/firebase/firestore.js";
+import { addReviewToBook } from "@/src/lib/firebase/firestore.js";
 import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp.js";
 import { getFirestore } from "firebase/firestore";
 
 // This is a Server Action
-// https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions
+// https://next.js.org/docs/app/building-your-application/data-fetching/server-actions
 // Replace the function below
 export async function handleReviewFormSubmission(data) {
   const { firebaseServerApp } = await getAuthenticatedAppForUser();
   const db = getFirestore(firebaseServerApp);
 
-  await addReviewToRestaurant(db, data.get("restaurantId"), {
+  await addReviewToBook(db, data.get("bookId"), {
     text: data.get("text"),
     rating: data.get("rating"),
 
@@ -19,4 +19,3 @@ export async function handleReviewFormSubmission(data) {
     userId: data.get("userId"),
   });
 }
-

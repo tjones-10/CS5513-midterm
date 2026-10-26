@@ -75,8 +75,8 @@ const ReviewDialog = ({
             />
           </p>
 
-          {/* Include the restaurant ID as a form value without displaying it. */}
-          <input type="hidden" name="restaurantId" value={id} />
+          {/* Include the book ID as a form value without displaying it. */}
+          <input type="hidden" name="bookId" value={id} />
           {/* Include the submitting user's ID as a hidden form value. */}
           <input type="hidden" name="userId" value={userId} />
         </article>

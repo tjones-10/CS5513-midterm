@@ -1,4 +1,4 @@
-// The filters shown on the restaurant listings page
+// The filters shown on the book listings page
 
 import Tag from "@/src/components/Tag.jsx";
 
@@ -38,7 +38,7 @@ export default function Filters({ filters, setFilters }) {
         <summary>
           <img src="/filter.svg" alt="filter" />
           <div>
-            <p>Restaurants</p>
+            <p>Books</p>
             <p>Sorted by {filters.sort || "Rating"}</p>
           </div>
         </summary>
@@ -51,22 +51,18 @@ export default function Filters({ filters, setFilters }) {
           }}
         >
           <FilterSelect
-            label="Category"
+            label="Genre"
             options={[
               "",
-              "Italian",
-              "Chinese",
-              "Japanese",
-              "Mexican",
-              "Indian",
-              "Mediterranean",
-              "Caribbean",
-              "Cajun",
-              "German",
-              "Russian",
-              "Cuban",
-              "Organic",
-              "Tapas",
+              "Fiction",
+              "Mystery",
+              "Sci-Fi",
+              "Fantasy",
+              "Romance",
+              "Biography",
+              "History",
+              "Thriller",
+              "Poetry",
             ]}
             value={filters.category}
             onChange={(event) => handleSelectionChange(event, "category")}
@@ -75,24 +71,24 @@ export default function Filters({ filters, setFilters }) {
           />
 
           <FilterSelect
-            label="City"
+            label="Author"
             options={[
               "",
-              "New York",
-              "Los Angeles",
-              "London",
-              "Paris",
-              "Tokyo",
-              "Mumbai",
-              "Dubai",
-              "Amsterdam",
-              "Seoul",
-              "Singapore",
-              "Istanbul",
+              "Jane Austen",
+              "George Orwell",
+              "Frank Herbert",
+              "J.R.R. Tolkien",
+              "Agatha Christie",
+              "Harper Lee",
+              "Octavia Butler",
+              "Toni Morrison",
+              "Ursula K. Le Guin",
+              "Kazuo Ishiguro",
+              "Emily St. John Mandel",
             ]}
-            value={filters.city}
-            onChange={(event) => handleSelectionChange(event, "city")}
-            name="city"
+            value={filters.author}
+            onChange={(event) => handleSelectionChange(event, "author")}
+            name="author"
             icon="/location.svg"
           />
 
@@ -121,7 +117,7 @@ export default function Filters({ filters, setFilters }) {
                 type="reset"
                 onClick={() => {
                   setFilters({
-                    city: "",
+                    author: "",
                     category: "",
                     price: "",
                     sort: "",

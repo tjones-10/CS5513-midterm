@@ -6,9 +6,9 @@ import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "FriendlyEats",
+  title: "The Bookworm",
   description:
-    "FriendlyEats is a restaurant review website built with Next.js and Firebase.",
+    "The Bookworm is a book review website built with Next.js and Firebase.",
 };
 
 export default async function RootLayout({ children }) {

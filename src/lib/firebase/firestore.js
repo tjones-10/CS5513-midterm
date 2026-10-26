@@ -1,5 +1,5 @@
-// Import the helper that supplies sample restaurant and review data.
-import { generateFakeRestaurantsAndReviews } from "@/src/lib/fakeRestaurants.js";
+// Import the helper that supplies sample book and review data.
+import { generateFakeBooksAndReviews } from "@/src/lib/fakeBooks.js";
 
 // Import Firestore query, document, subscription, and transaction operations.
 import {
@@ -15,36 +15,32 @@ import {
   runTransaction,
   where,
   addDoc,
-  getFirestore,
 } from "firebase/firestore";
 
 // Import the application's configured Firestore database for client-side helpers.
 import { db } from "@/src/lib/firebase/clientApp";
 
-// Save an uploaded image URL to the photo field of a restaurant document.
-export async function updateRestaurantImageReference(
-  restaurantId,
-  publicImageUrl
-) {
-  // Build a reference to the restaurant document using its ID.
-  const restaurantRef = doc(collection(db, "restaurants"), restaurantId);
+// Save an uploaded image URL to the photo field of a book document.
+export async function updateBookImageReference(bookId, publicImageUrl) {
+  // Build a reference to the book document using its ID.
+  const bookRef = doc(collection(db, "books"), bookId);
   // Update the document's photo URL if the reference exists.
-  if (restaurantRef) {
-    await updateDoc(restaurantRef, { photo: publicImageUrl });
+  if (bookRef) {
+    await updateDoc(bookRef, { photo: publicImageUrl });
   }
 }
 
-// Update a restaurant's rating totals and write the new rating in one transaction.
+// Update a book's rating totals and write the new rating in one transaction.
 const updateWithRating = async (
   transaction,
   docRef,
   newRatingDocument,
   review
 ) => {
-  // Read the restaurant inside the transaction to get the latest rating totals.
-  const restaurant = await transaction.get(docRef);
-  // Extract the document's stored restaurant fields.
-  const data = restaurant.data();
+  // Read the book inside the transaction to get the latest rating totals.
+  const book = await transaction.get(docRef);
+  // Extract the document's stored book fields.
+  const data = book.data();
   // Increment the rating count, treating a missing or zero count as the first rating.
   const newNumRatings = data?.numRatings ? data.numRatings + 1 : 1;
   // Add this review's numeric rating to the existing sum, defaulting to zero.
@@ -52,7 +48,7 @@ const updateWithRating = async (
   // Calculate the new average based on the updated sum and count.
   const newAverage = newSumRating / newNumRatings;
 
-  // Store the updated count, sum, and average on the restaurant document.
+  // Store the updated count, sum, and average on the book document.
   transaction.update(docRef, {
     numRatings: newNumRatings,
     sumRating: newSumRating,
@@ -67,11 +63,11 @@ const updateWithRating = async (
 };
 
 
-// Validate review inputs and transactionally save the review and restaurant totals.
-export async function addReviewToRestaurant(db, restaurantId, review) {
-  // Reject calls that do not identify a restaurant.
-  if (!restaurantId) {
-    throw new Error("No restaurant ID has been provided.");
+// Validate review inputs and transactionally save the review and book totals.
+export async function addReviewToBook(db, bookId, review) {
+  // Reject calls that do not identify a book.
+  if (!bookId) {
+    throw new Error("No book ID has been provided.");
   }
 
   // Reject calls that do not include review data.
@@ -81,21 +77,21 @@ export async function addReviewToRestaurant(db, restaurantId, review) {
 
   // Perform document creation and aggregate updates as a single Firestore transaction.
   try {
-    // Reference the restaurant record that will receive the rating aggregates.
-    const docRef = doc(collection(db, "restaurants"), restaurantId);
-    // Create a reference for a new rating in this restaurant's ratings subcollection.
+    // Reference the book record that will receive the rating aggregates.
+    const docRef = doc(collection(db, "books"), bookId);
+    // Create a reference for a new rating in this book's ratings subcollection.
     const newRatingDocument = doc(
-      collection(db, `restaurants/${restaurantId}/ratings`),
+      collection(db, `books/${bookId}/ratings`),
     );
 
-    // Atomically update the restaurant aggregates and create the rating record.
+    // Atomically update the book aggregates and create the rating record.
     await runTransaction(db, (transaction) =>
       updateWithRating(transaction, docRef, newRatingDocument, review),
     );
   // Log transaction failures and rethrow them so callers can handle the error.
   } catch (error) {
     console.error(
-      "There was an error adding the rating to the restaurant",
+      "There was an error adding the rating to the book",
       error,
     );
     throw error;
@@ -103,15 +99,15 @@ export async function addReviewToRestaurant(db, restaurantId, review) {
 }
 
 
-// Apply optional category, city, price, and sort choices to a Firestore query.
-function applyQueryFilters(q, { category, city, price, sort }) {
+// Apply optional category, author, price, and sort choices to a Firestore query.
+function applyQueryFilters(q, { category, author, price, sort }) {
   // Restrict results to the selected category when one was provided.
   if (category) {
     q = query(q, where("category", "==", category));
   }
-  // Restrict results to the selected city when one was provided.
-  if (city) {
-    q = query(q, where("city", "==", city));
+  // Restrict results to the selected author when one was provided.
+  if (author) {
+    q = query(q, where("author", "==", author));
   }
   // Match the selected price tier using the number of symbols in its value.
   if (price) {
@@ -120,7 +116,7 @@ function applyQueryFilters(q, { category, city, price, sort }) {
   // Sort by highest average rating by default or when Rating was selected.
   if (sort === "Rating" || !sort) {
     q = query(q, orderBy("avgRating", "desc"));
-  // Otherwise sort by the restaurants with the most reviews when requested.
+  // Otherwise sort by the books with the most reviews when requested.
   } else if (sort === "Review") {
     q = query(q, orderBy("numRatings", "desc"));
   }
@@ -128,10 +124,10 @@ function applyQueryFilters(q, { category, city, price, sort }) {
   return q;
 }
 
-// Fetch restaurant documents once and return their data as plain objects.
-export async function getRestaurants(db = db, filters = {}) {
-  // Begin with a query over the restaurants collection.
-  let q = query(collection(db, "restaurants"));
+// Fetch book documents once and return their data as plain objects.
+export async function getBooks(db = db, filters = {}) {
+  // Begin with a query over the books collection.
+  let q = query(collection(db, "books"));
 
   // Add the requested filters and sort order to the query.
   q = applyQueryFilters(q, filters);
@@ -149,16 +145,16 @@ export async function getRestaurants(db = db, filters = {}) {
 }
 
 
-// Subscribe to live restaurant query updates and pass converted results to a callback.
-export function getRestaurantsSnapshot(cb, filters = {}) {
+// Subscribe to live book query updates and pass converted results to a callback.
+export function getBooksSnapshot(cb, filters = {}) {
   // Validate the callback before opening a Firestore subscription.
   if (typeof cb !== "function") {
     console.log("Error: The callback parameter is not a function");
     return;
   }
 
-  // Start a query for all restaurants.
-  let q = query(collection(db, "restaurants"));
+  // Start a query for all books.
+  let q = query(collection(db, "books"));
   // Apply the same optional filters and sorting as the one-time fetch helper.
   q = applyQueryFilters(q, filters);
 
@@ -174,22 +170,22 @@ export function getRestaurantsSnapshot(cb, filters = {}) {
       };
     });
 
-    // Deliver the updated restaurant list to the subscriber's callback.
+    // Deliver the updated book list to the subscriber's callback.
     cb(results);
   });
 }
 
 
-// Fetch one restaurant document and convert its timestamp for application use.
-export async function getRestaurantById(db, restaurantId) {
-  // Log and stop when the requested restaurant ID is missing.
-  if (!restaurantId) {
-    console.log("Error: Invalid ID received: ", restaurantId);
+// Fetch one book document and convert its timestamp for application use.
+export async function getBookById(db, bookId) {
+  // Log and stop when the requested book ID is missing.
+  if (!bookId) {
+    console.log("Error: Invalid ID received: ", bookId);
     return;
   }
-  // Build a reference to the requested restaurant document.
-  const docRef = doc(db, "restaurants", restaurantId);
-  // Fetch the restaurant document from Firestore.
+  // Build a reference to the requested book document.
+  const docRef = doc(db, "books", bookId);
+  // Fetch the book document from Firestore.
   const docSnap = await getDoc(docRef);
   // Return document fields with its timestamp converted to a JavaScript Date.
   return {
@@ -198,11 +194,11 @@ export async function getRestaurantById(db, restaurantId) {
   };
 }
 
-// Subscribe to live updates for one restaurant and pass each converted record to a callback.
-export function getRestaurantSnapshotById(restaurantId, cb) {
-  // Log and stop when no restaurant ID was supplied.
-  if (!restaurantId) {
-    console.log("Error: Invalid ID received: ", restaurantId);
+// Subscribe to live updates for one book and pass each converted record to a callback.
+export function getBookSnapshotById(bookId, cb) {
+  // Log and stop when no book ID was supplied.
+  if (!bookId) {
+    console.log("Error: Invalid ID received: ", bookId);
     return;
   }
 
@@ -212,11 +208,11 @@ export function getRestaurantSnapshotById(restaurantId, cb) {
     return;
   }
 
-  // Create a reference to the requested restaurant record.
-  const docRef = doc(db, "restaurants", restaurantId);
+  // Create a reference to the requested book record.
+  const docRef = doc(db, "books", bookId);
   // Subscribe and convert each snapshot to an object with a JavaScript Date timestamp.
   return onSnapshot(docRef, (docSnap) => {
-    // Pass the converted restaurant data to the caller's callback.
+    // Pass the converted book data to the caller's callback.
     cb({
       ...docSnap.data(),
       timestamp: docSnap.data().timestamp.toDate(),
@@ -225,17 +221,17 @@ export function getRestaurantSnapshotById(restaurantId, cb) {
 }
 
 
-// Fetch reviews for one restaurant, newest first, and return them as plain objects.
-export async function getReviewsByRestaurantId(db, restaurantId) {
-  // Log and stop if the requested restaurant ID is missing.
-  if (!restaurantId) {
-    console.log("Error: Invalid restaurantId received: ", restaurantId);
+// Fetch reviews for one book, newest first, and return them as plain objects.
+export async function getReviewsByBookId(db, bookId) {
+  // Log and stop if the requested book ID is missing.
+  if (!bookId) {
+    console.log("Error: Invalid bookId received: ", bookId);
     return;
   }
 
-  // Query the restaurant's ratings subcollection ordered by newest timestamp first.
+  // Query the book's ratings subcollection ordered by newest timestamp first.
   const q = query(
-    collection(db, "restaurants", restaurantId, "ratings"),
+    collection(db, "books", bookId, "ratings"),
     orderBy("timestamp", "desc")
   );
 
@@ -252,17 +248,17 @@ export async function getReviewsByRestaurantId(db, restaurantId) {
   });
 }
 
-// Subscribe to live review changes for a restaurant and deliver converted reviews to a callback.
-export function getReviewsSnapshotByRestaurantId(restaurantId, cb) {
-  // Log and stop if no restaurant ID was provided.
-  if (!restaurantId) {
-    console.log("Error: Invalid restaurantId received: ", restaurantId);
+// Subscribe to live review changes for a book and deliver converted reviews to a callback.
+export function getReviewsSnapshotByBookId(bookId, cb) {
+  // Log and stop if no book ID was provided.
+  if (!bookId) {
+    console.log("Error: Invalid bookId received: ", bookId);
     return;
   }
 
-  // Query the restaurant's ratings in descending timestamp order.
+  // Query the book's ratings in descending timestamp order.
   const q = query(
-    collection(db, "restaurants", restaurantId, "ratings"),
+    collection(db, "books", bookId, "ratings"),
     orderBy("timestamp", "desc")
   );
   // Listen for updates to the matching reviews.
@@ -281,28 +277,28 @@ export function getReviewsSnapshotByRestaurantId(restaurantId, cb) {
   });
 }
 
-// Create sample restaurants and ratings in Firestore for development or testing.
-export async function addFakeRestaurantsAndReviews() {
-  // Generate the sample restaurant and review records.
-  const data = await generateFakeRestaurantsAndReviews();
-  // Process each restaurant and its associated sample ratings.
-  for (const { restaurantData, ratingsData } of data) {
-    // Catch write errors for this restaurant so the loop can continue.
+// Create sample books and ratings in Firestore for development or testing.
+export async function addFakeBooksAndReviews() {
+  // Generate the sample book and review records.
+  const data = await generateFakeBooksAndReviews();
+  // Process each book and its associated sample ratings.
+  for (const { bookData, ratingsData } of data) {
+    // Catch write errors for this book so the loop can continue.
     try {
-      // Create the restaurant document and retain its generated ID.
+      // Create the book document and retain its generated ID.
       const docRef = await addDoc(
-        collection(db, "restaurants"),
-        restaurantData
+        collection(db, "books"),
+        bookData
       );
 
-      // Add every associated rating under the new restaurant's subcollection.
+      // Add every associated rating under the new book's subcollection.
       for (const ratingData of ratingsData) {
         await addDoc(
-          collection(db, "restaurants", docRef.id, "ratings"),
+          collection(db, "books", docRef.id, "ratings"),
           ratingData
         );
       }
-    // Log failures while writing this restaurant's sample documents.
+    // Log failures while writing this book's sample documents.
     } catch (e) {
       console.log("There was an error adding the document");
       console.error("Error adding document: ", e);

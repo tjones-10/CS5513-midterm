@@ -1,19 +1,19 @@
-// This component shows restaurant metadata, and offers some actions to the user like uploading a new restaurant image, and adding a review.
+// This component shows book metadata, and offers some actions to the user like uploading a new book image, and adding a review.
 
 import React from "react";
 import renderStars from "@/src/components/Stars.jsx";
 
-const RestaurantDetails = ({
-  restaurant,
+const BookDetails = ({
+  book,
   userId,
-  handleRestaurantImage,
+  handleBookImage,
   setIsOpen,
   isOpen,
   children,
 }) => {
   return (
     <section className="img__section">
-      <img src={restaurant.photo} alt={restaurant.name} />
+      <img src={book.photo} alt={book.name} />
 
       <div className="actions">
         {userId && (
@@ -27,7 +27,7 @@ const RestaurantDetails = ({
           />
         )}
         <label
-          onChange={(event) => handleRestaurantImage(event.target)}
+          onChange={(event) => handleBookImage(event.target)}
           htmlFor="upload-image"
           className="add"
         >
@@ -44,18 +44,18 @@ const RestaurantDetails = ({
 
       <div className="details__container">
         <div className="details">
-          <h2>{restaurant.name}</h2>
+          <h2>{book.name}</h2>
 
-          <div className="restaurant__rating">
-            <ul>{renderStars(restaurant.avgRating)}</ul>
+          <div className="book__rating">
+            <ul>{renderStars(book.avgRating)}</ul>
 
-            <span>({restaurant.numRatings})</span>
+            <span>({book.numRatings})</span>
           </div>
 
           <p>
-            {restaurant.category} | {restaurant.city}
+            {book.category} | {book.author}
           </p>
-          <p>{"$".repeat(restaurant.price)}</p>
+          <p>{"$".repeat(book.price)}</p>
           {children}
         </div>
       </div>
@@ -63,4 +63,4 @@ const RestaurantDetails = ({
   );
 };
 
-export default RestaurantDetails;
+export default BookDetails;
