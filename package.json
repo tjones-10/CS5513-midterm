@@ -1,0 +1,53 @@
+{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "npm run lint:next && npm:lint:prettier",
+    "lint:next": "next lint",
+    "lint:prettier": "prettier --check --ignore-path .gitignore .",
+    "lint:fix": "npm run lint:next -- --fix && npm run lint:prettier -- --write"
+  },
+  "dependencies": {
+    "@genkit-ai/google-genai": "^1.42.0",
+    "cookies-next": "^6.1.1",
+    "firebase": "^13.0.0",
+    "firebase-tools": "^15.34.0",
+    "genkit": "^1.42.0",
+    "glob": "^13.0.6",
+    "next": "^16.4.1",
+    "node": "^26.12.0",
+    "react": "^19.3.1",
+    "react-dom": "19.3.1",
+    "server-only": "^0.0.1",
+    "uuid": "^14.0.3"
+  },
+  "browser": {
+    "fs": false,
+    "os": false,
+    "path": false,
+    "child_process": false,
+    "net": false,
+    "tls": false
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^16.4.1",
+    "eslint": "^10.12.0",
+    "eslint-config-next": "^16.4.1",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.10"
+  },
+  "allowScripts": {
+    "sharp@0.34.5": true,
+    "@firebase/util@1.12.1": true,
+    "@firebase/util@1.15.3": true,
+    "unrs-resolver@1.12.2": true,
+    "esbuild@0.28.2": true,
+    "node@26.12.0": true,
+    "protobufjs@7.6.6": true,
+    "re2@1.27.0": true
+  }
+}
