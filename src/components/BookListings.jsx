@@ -1,14 +1,12 @@
 "use client";
 
-// This components handles the book listings page
-// It receives data from src/app/page.js, such as the initial books and search params from the URL
+// This component handles the book listings page and its live book results.
 
 import Link from "next/link";
 import { React, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import renderStars from "@/src/components/Stars.jsx";
 import { getBooksSnapshot } from "@/src/lib/firebase/firestore.js";
-import Filters from "@/src/components/Filters.jsx";
+import { useBookFilters } from "@/src/components/BookFilterContext.jsx";
 
 const BookItem = ({ book }) => (
   <li key={book.id}>
@@ -55,26 +53,9 @@ const BookMetadata = ({ book }) => (
   </div>
 );
 
-export default function BookListings({
-  initialBooks,
-  searchParams,
-}) {
-  const router = useRouter();
-
-  // The initial filters are the search params from the URL, useful for when the user refreshes the page
-  const initialFilters = {
-    author: searchParams.author || "",
-    category: searchParams.category || "",
-    price: searchParams.price || "",
-    sort: searchParams.sort || "",
-  };
-
+export default function BookListings({ initialBooks }) {
   const [books, setBooks] = useState(initialBooks);
-  const [filters, setFilters] = useState(initialFilters);
-
-  useEffect(() => {
-    routerWithFilters(router, filters);
-  }, [router, filters]);
+  const { filters } = useBookFilters();
 
   useEffect(() => {
     return getBooksSnapshot((data) => {
@@ -84,7 +65,6 @@ export default function BookListings({
 
   return (
     <article>
-      <Filters filters={filters} setFilters={setFilters} />
       <ul className="books">
         {books.map((book) => (
           <BookItem key={book.id} book={book} />
@@ -92,17 +72,4 @@ export default function BookListings({
       </ul>
     </article>
   );
-}
-
-function routerWithFilters(router, filters) {
-  const queryParams = new URLSearchParams();
-
-  for (const [key, value] of Object.entries(filters)) {
-    if (value !== undefined && value !== "") {
-      queryParams.append(key, value);
-    }
-  }
-
-  const queryString = queryParams.toString();
-  router.push(`?${queryString}`);
 }

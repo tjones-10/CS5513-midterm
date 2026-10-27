@@ -8,6 +8,8 @@ import {
 } from "@/src/lib/firebase/auth.js";
 import { addFakeBooksAndReviews } from "@/src/lib/firebase/firestore.js";
 import { setCookie, deleteCookie } from "cookies-next";
+import Filters from "@/src/components/Filters.jsx";
+import { useBookFilters } from "@/src/components/BookFilterContext.jsx";
 
 function useUserSession(initialUser) {
   useEffect(() => {
@@ -28,9 +30,9 @@ function useUserSession(initialUser) {
   return initialUser;
 }
 
-
 export default function Header({ initialUser }) {
   const user = useUserSession(initialUser);
+  const { filters, setFilters, isListingsPage } = useBookFilters();
 
   const handleSignOut = (event) => {
     event.preventDefault();
@@ -48,8 +50,8 @@ export default function Header({ initialUser }) {
         <img src="/friendly-eats.svg" alt="The Bookworm" />
         The Bookworm
       </Link>
-      {user ? (
-        <>
+      <div className="header__actions">
+        {user ? (
           <div className="profile">
             <p>
               <img
@@ -79,15 +81,18 @@ export default function Header({ initialUser }) {
               </ul>
             </div>
           </div>
-        </>
-      ) : (
-        <div className="profile">
-          <a href="#" onClick={handleSignIn}>
-            <img src="/profile.svg" alt="A placeholder user image" />
-            Sign In with Google
-          </a>
-        </div>
-      )}
+        ) : (
+          <div className="profile">
+            <a href="#" onClick={handleSignIn}>
+              <img src="/profile.svg" alt="A placeholder user image" />
+              Sign In with Google
+            </a>
+          </div>
+        )}
+        {isListingsPage && (
+          <Filters filters={filters} setFilters={setFilters} />
+        )}
+      </div>
     </header>
   );
 }

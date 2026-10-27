@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,500;0,700;1,800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
-
 * {
   box-sizing: border-box;
   padding: 0;
@@ -7,11 +5,7 @@
 }
 
 body {
-  font-family:
-    "Roboto",
-    ui-sans-serif,
-    system-ui,
-    -apple-system;
+  font-family: "Times New Roman", Times, serif;
 }
 
 ul {
@@ -97,10 +91,14 @@ footer {
 }
 
 header {
-  background-color: rgb(56 85 116);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgb(56 116 75);
   color: white;
-  display: flex;
-  justify-content: space-between;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   padding: 0.8rem;
   align-items: center;
   & img {
@@ -126,8 +124,68 @@ header {
   }
 }
 
+.header__actions {
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.header__actions .profile {
+  flex-shrink: 0;
+}
+
+.header__actions .filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.header__actions .filter-menu {
+  position: relative;
+  flex-shrink: 0;
+  background-color: transparent;
+  border-bottom: 0;
+}
+
+.header__actions .filter-menu summary {
+  gap: 0.4rem;
+  color: white;
+}
+
+.header__actions .filter-menu summary img {
+  width: auto;
+  height: 1.5rem;
+}
+
+.header__actions .filter-menu p:last-child {
+  color: white;
+}
+
+.header__actions .filter-menu[open] > form {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: 101;
+  width: min(90vw, 360px);
+  color: rgb(42 101 58);
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 50%);
+}
+
+.header__actions .tags {
+  max-width: 24vw;
+  margin: 0;
+  gap: 0.35rem;
+}
+
 .logo {
   display: flex;
+  grid-column: 2;
   align-items: center;
 
   & img {
@@ -150,13 +208,13 @@ header {
 .menu ul {
   /* display: block; */
   left: calc(-220px * 0.9);
-  color: rgb(42 72 101);
+  color: rgb(42 101 58);
   background-color: white;
   box-shadow: 0 0 10px 0 rgb(0 0 0 / 50%);
 
   & li {
     padding: 10px;
-    border-bottom: 1px solid rgb(42 72 101 / 0.25);
+    border-bottom: 1px solid rgb(42 101 58 / 0.25);
   }
 
   & a {
@@ -165,7 +223,7 @@ header {
   }
 
   & li:has(a):hover {
-    background-color: rgb(42 72 101 / 0.05);
+    background-color: rgb(42 101 58 / 0.05);
   }
 
   & a:visited {
@@ -193,19 +251,43 @@ header {
   }
 }
 
+@media (max-width: 640px) {
+  header {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    row-gap: 0.5rem;
+  }
+
+  .logo {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: center;
+  }
+
+  .header__actions {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: center;
+    max-width: 100%;
+  }
+
+  .header__actions .tags {
+    max-width: 45vw;
+  }
+}
+
 .main__home {
-  background-color: rgb(178 193 212);
+  background-color: rgb(178 212 184);
   min-height: 100vh;
 }
 
 .main__book {
-  background-color: rgb(229 234 240);
+  background-color: rgb(229 240 232);
   min-height: 90vh;
 }
 
 article {
   margin: 0 auto;
-  background-color: rgb(229 234 240);
+  background-color: rgb(229 240 232);
   padding: 20px 40px;
 }
 
@@ -321,7 +403,7 @@ a {
 
 .details__container {
   --tw-gradient-from: #c60094 var(--tw-gradient-from-position);
-  --tw-gradient-to: rgb(56 85 116 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-to: rgb(56 116 75 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
   background-image: linear-gradient(to top right, var(--tw-gradient-stops));
   position: absolute;
@@ -481,7 +563,7 @@ a {
 .filter-menu {
   background-color: white;
   border-radius: 3px;
-  border-bottom: 1px solid rgb(27 58 87);
+  border-bottom: 1px solid rgb(27 87 45);
 
   & summary {
     font-weight: bold;
@@ -540,7 +622,7 @@ a {
   }
 
   & p:last-child {
-    color: rgb(42 72 101);
+    color: rgb(42 101 58);
     font-weight: 600;
     font-size: 0.875rem;
     line-height: 1.25rem;
@@ -564,7 +646,7 @@ a {
     padding-bottom: 0.25rem;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    background-color: rgb(71 98 130);
+    background-color: rgb(71 130 80);
     border-radius: 9999px;
     color: white;
     font-size: 0.95rem;
