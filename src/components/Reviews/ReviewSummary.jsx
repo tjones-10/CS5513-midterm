@@ -46,7 +46,7 @@ export async function GeminiSummary({ bookId }) {
     // Create a Genkit instance with Google AI and the default Gemini Flash model.
     const ai = genkit({
       plugins: [googleAI()],
-      model: googleAI.model("gemini-flash-latest"),
+      model: googleAI.model("gemini-2.5-flash"),
     });
     // Generate a response from the assembled review prompt.
     const { text } = await ai.generate(prompt);
@@ -58,13 +58,12 @@ export async function GeminiSummary({ bookId }) {
         <p>✨ Summarized with Gemini</p>
       </div>
     );
-  // Log failures on the server and render a user-facing error message.
+    // Log failures on the server and render a user-facing error message.
   } catch (e) {
     console.error(e);
     return <p>Error summarizing reviews.</p>;
   }
 }
-
 
 // Render the placeholder shown while the review summary is being prepared.
 export function GeminiSummarySkeleton() {

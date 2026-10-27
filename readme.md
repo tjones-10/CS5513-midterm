@@ -19,6 +19,14 @@ npm i
 npm run dev
 ```
 
+For Gemini review summaries in Firebase App Hosting, set the `GEMINI_API_KEY` secret:
+
+```sh
+firebase apphosting:secrets:set GEMINI_API_KEY
+```
+
+Enter the Google AI API key when prompted; do not put it in source control. The `apphosting.yaml` configuration exposes this secret to the server as `GEMINI_API_KEY`. Deploy the App Hosting backend again after creating or updating the secret and configuration.
+
 4. In your browser, open the URL: `http://localhost:3000`
 
 #### Use the application
