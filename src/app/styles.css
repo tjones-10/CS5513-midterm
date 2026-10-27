@@ -163,6 +163,7 @@ header {
 
 .header__actions .filter-menu p:last-child {
   color: white;
+  font-family: "Times New Roman", Times, serif;
 }
 
 .header__actions .filter-menu[open] > form {
@@ -194,7 +195,7 @@ header {
 
   color: white;
   text-decoration: none;
-  font-size: 1.25rem;
+  font-size: 1.75rem;
   font-weight: 500;
 }
 
@@ -315,7 +316,7 @@ article {
   }
 
   & h2 {
-    font-weight: normal;
+    font-weight: 700;
   }
 }
 
@@ -349,6 +350,10 @@ a {
 
 .book__details {
   padding: 20px;
+}
+
+.details__container h2 {
+  font-weight: 700;
 }
 
 .book__rating {
@@ -593,6 +598,10 @@ a {
   & img {
     height: 4rem;
     max-width: 100%;
+  }
+
+  & .filter-icon--sort {
+    height: 5rem;
   }
 
   & form div {

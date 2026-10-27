@@ -5,7 +5,11 @@ import Tag from "@/src/components/Tag.jsx";
 function FilterSelect({ label, options, value, onChange, name, icon }) {
   return (
     <div>
-      <img src={icon} alt={label} />
+      <img
+        className={name === "sort" ? "filter-icon--sort" : undefined}
+        src={icon}
+        alt={label}
+      />
       <label>
         {label}
         <select value={value} onChange={onChange} name={name}>
