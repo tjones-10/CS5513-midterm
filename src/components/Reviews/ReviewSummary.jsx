@@ -46,7 +46,7 @@ export async function GeminiSummary({ bookId }) {
     // Create a Genkit instance with Google AI and the default Gemini Flash model.
     const ai = genkit({
       plugins: [googleAI()],
-      model: googleAI.model("gemini-2.5-flash"),
+      model: googleAI.model("gemini-3.8-flash"),
     });
     // Generate a response from the assembled review prompt.
     const { text } = await ai.generate(prompt);
