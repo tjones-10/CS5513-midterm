@@ -1,5 +1,6 @@
 import renderStars from "@/src/components/Stars.jsx";
 
+// Display one review's rating, text, and localized submission date.
 export function Review({ rating, text, timestamp }) {
   return (
     <li className="review__item">
@@ -15,6 +16,7 @@ export function Review({ rating, text, timestamp }) {
   );
 }
 
+// Render a placeholder review while the real review list is loading.
 export function ReviewSkeleton() {
   return (
     <li className="review__item">

@@ -7,13 +7,16 @@ import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
+  // Define the site name and description used by the browser and search results.
   title: "The Bookworm",
   description:
     "The Bookworm is a book review website built with Next.js and Firebase.",
 };
 
 export default async function RootLayout({ children }) {
+  // Resolve the authenticated user for the shared navigation header.
   const { currentUser } = await getAuthenticatedAppForUser();
+  // Wrap route content in shared filter state and the site header.
   return (
     <html lang="en">
       <body>

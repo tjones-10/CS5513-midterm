@@ -1,7 +1,10 @@
 // This component displays star ratings
 
+// Return five filled or outlined stars based on the numeric average rating.
 export default function renderStars(avgRating) {
+  // Collect the star list elements before returning them to the caller.
   const arr = [];
+  // Build exactly five stars, filling those below the whole-number rating.
   for (let i = 0; i < 5; i++) {
     if (i < Math.floor(avgRating)) {
       arr.push(
@@ -41,5 +44,6 @@ export default function renderStars(avgRating) {
       );
     }
   }
+  // Return the generated stars for rendering in the rating list.
   return arr;
 }

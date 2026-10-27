@@ -19,13 +19,16 @@ export default async function Home(props) {
   // parameters via Next.js and download the data
   // we need for this page
   const params = await props.params;
+  // Load the user and Firebase app needed for authenticated book data.
   const { currentUser } = await getUser();
   const { firebaseServerApp } = await getAuthenticatedAppForUser();
+  // Fetch the requested book using its route ID.
   const book = await getBookById(
     getFirestore(firebaseServerApp),
     params.id
   );
 
+  // Render book details, an AI summary, and reviews with loading fallbacks.
   return (
     <main className="main__book">
       <Book

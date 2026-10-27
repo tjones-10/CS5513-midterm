@@ -2,6 +2,7 @@ import React from "react";
 
 // A HTML and CSS only rating picker thanks to: https://codepen.io/chris22smith/pen/MJzLJN
 
+// Render five radio choices that CSS presents as an interactive star rating.
 const RatingPicker = () => {
   return (
     <p className="rating-picker">

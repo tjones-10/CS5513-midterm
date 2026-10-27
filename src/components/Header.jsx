@@ -12,14 +12,17 @@ import Filters from "@/src/components/Filters.jsx";
 import { useBookFilters } from "@/src/components/BookFilterContext.jsx";
 
 function useUserSession(initialUser) {
+  // Track Firebase auth-token changes and keep the server session cookie current.
   useEffect(() => {
     return onIdTokenChanged(async (user) => {
+      // Save a fresh ID token for server requests, or remove it when signed out.
       if (user) {
         const idToken = await user.getIdToken();
         await setCookie("__session", idToken);
       } else {
         await deleteCookie("__session");
       }
+      // Reload only when the authenticated identity differs from server props.
       if (initialUser?.uid === user?.uid) {
         return;
       }
@@ -31,19 +34,23 @@ function useUserSession(initialUser) {
 }
 
 export default function Header({ initialUser }) {
+  // Read the current user and shared listing filters for header controls.
   const user = useUserSession(initialUser);
   const { filters, setFilters, isListingsPage } = useBookFilters();
 
+  // Stop link navigation and trigger the Firebase sign-out operation.
   const handleSignOut = (event) => {
     event.preventDefault();
     signOut();
   };
 
+  // Stop link navigation and start Google sign-in.
   const handleSignIn = (event) => {
     event.preventDefault();
     signInWithGoogle();
   };
 
+  // Render the site title, account menu, and listing filters when applicable.
   return (
     <header>
       <Link href="/" className="logo">
@@ -63,7 +70,11 @@ export default function Header({ initialUser }) {
             </p>
 
             <div className="menu">
-              ...
+              <span className="menu__icon" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </span>
               <ul>
                 <li>{user.displayName}</li>
 

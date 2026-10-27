@@ -3,6 +3,7 @@
 // menu in the top right corner and select "Add sample books"
 
 export const randomData = {
+  // Titles chosen at random when sample book records are generated.
   bookNames: [
     "Pride and Prejudice",
     "1984",
@@ -45,6 +46,7 @@ export const randomData = {
     "Frankenstein",
     "Dracula",
   ],
+  // Authors chosen for generated books and shown in the author filter.
   bookAuthors: [
     "Jane Austen",
     "George Orwell",
@@ -57,7 +59,19 @@ export const randomData = {
     "Ursula K. Le Guin",
     "Kazuo Ishiguro",
     "Emily St. John Mandel",
+    "Margaret Atwood",
+    "Mary Shelley",
+    "Bram Stoker",
+    "F. Scott Fitzgerald",
+    "William Shakespeare",
+    "Walt Whitman",
+    "Ernest Hemingway",
+    "Neil Gaiman",
+    "Andy Weir",
+    "Donna Tartt",
+    "Celeste Ng",
   ],
+  // Categories chosen for generated books and used by the genre filter.
   bookCategories: [
     "Fiction",
     "Mystery",
@@ -69,6 +83,7 @@ export const randomData = {
     "Thriller",
     "Poetry",
   ],
+  // Open Library cover-image URLs chosen as generated books' cover photos.
   bookCovers: [
     "https://covers.openlibrary.org/b/id/8228691-L.jpg",
     "https://covers.openlibrary.org/b/id/7222246-L.jpg",
@@ -80,10 +95,27 @@ export const randomData = {
     "https://covers.openlibrary.org/b/id/10523339-L.jpg",
     "https://covers.openlibrary.org/b/id/8231856-L.jpg",
     "https://covers.openlibrary.org/b/id/12821573-L.jpg",
+    "https://covers.openlibrary.org/b/isbn/9780141439518-L.jpg",
+    "https://covers.openlibrary.org/b/isbn/9780451524935-L.jpg",
+    "https://covers.openlibrary.org/b/isbn/9780441172719-L.jpg",
+    "https://covers.openlibrary.org/b/isbn/9780547928227-L.jpg",
+    "https://covers.openlibrary.org/b/isbn/9780061120084-L.jpg",
+    "https://covers.openlibrary.org/b/isbn/9780743273565-L.jpg",
+    "https://covers.openlibrary.org/b/isbn/9780441569595-L.jpg",
+    "https://covers.openlibrary.org/b/isbn/9780756404741-L.jpg",
+    "https://covers.openlibrary.org/b/isbn/9780307588371-L.jpg",
+    "https://covers.openlibrary.org/b/isbn/9780553418026-L.jpg",
   ],
+  // Review text and 1–5 star ratings chosen for generated book reviews.
   bookReviews: [
-    { text: "The characters felt fully alive from the first chapter.", rating: 5 },
-    { text: "A beautifully written story I did not want to put down.", rating: 5 },
+    {
+      text: "The characters felt fully alive from the first chapter.",
+      rating: 5,
+    },
+    {
+      text: "A beautifully written story I did not want to put down.",
+      rating: 5,
+    },
     { text: "The plot twists were clever without feeling cheap.", rating: 5 },
     { text: "Rich world-building and a satisfying ending.", rating: 5 },
     { text: "The prose is elegant and the themes still resonate.", rating: 5 },
@@ -94,10 +126,16 @@ export const randomData = {
     { text: "Unforgettable characters and a moving conclusion.", rating: 5 },
     { text: "The pacing kept me hooked from start to finish.", rating: 5 },
     { text: "Strong writing and a memorable setting.", rating: 4 },
-    { text: "Enjoyed it overall and would recommend it to friends.", rating: 4 },
+    {
+      text: "Enjoyed it overall and would recommend it to friends.",
+      rating: 4,
+    },
     { text: "Thoughtful storytelling with a few slow stretches.", rating: 4 },
     { text: "Interesting premise, but the middle dragged a bit.", rating: 3 },
-    { text: "Decent read, though nothing I will think about for long.", rating: 3 },
+    {
+      text: "Decent read, though nothing I will think about for long.",
+      rating: 3,
+    },
     { text: "The writing was fine, but the plot felt familiar.", rating: 3 },
     {
       text: "I struggled to connect with the narrator.",
@@ -105,7 +143,10 @@ export const randomData = {
     },
     { text: "Expected more from the ending after a strong start.", rating: 2 },
     { text: "The dialogue felt stiff and the stakes never rose.", rating: 2 },
-    { text: "Disappointing overall; I finished it out of obligation.", rating: 2 },
+    {
+      text: "Disappointing overall; I finished it out of obligation.",
+      rating: 2,
+    },
     {
       text: "I could not get into this book and stopped caring about the plot.",
       rating: 1,
@@ -119,10 +160,19 @@ export const randomData = {
     { text: "A masterpiece of character and craft.", rating: 5 },
     { text: "I could not stop thinking about these pages.", rating: 5 },
     { text: "Sharp, original, and worth every hour spent reading.", rating: 5 },
-    { text: "Highly recommended for anyone who loves a great story.", rating: 5 },
-    { text: "The author balances ideas and emotion with real skill.", rating: 5 },
+    {
+      text: "Highly recommended for anyone who loves a great story.",
+      rating: 5,
+    },
+    {
+      text: "The author balances ideas and emotion with real skill.",
+      rating: 5,
+    },
     { text: "A gem; I will be rereading this soon.", rating: 5 },
-    { text: "Excellent structure and a voice I trusted immediately.", rating: 5 },
+    {
+      text: "Excellent structure and a voice I trusted immediately.",
+      rating: 5,
+    },
     { text: "A fantastic reading experience from cover to cover.", rating: 5 },
     {
       text: "Lovely atmosphere, perfect for a quiet weekend.",

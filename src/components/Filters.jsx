@@ -1,15 +1,13 @@
 // The filters shown on the book listings page
 
 import Tag from "@/src/components/Tag.jsx";
+import { randomData } from "@/src/lib/randomData.js";
 
+// Render one labeled select input and its accompanying icon.
 function FilterSelect({ label, options, value, onChange, name, icon }) {
   return (
     <div>
-      <img
-        className={name === "sort" ? "filter-icon--sort" : undefined}
-        src={icon}
-        alt={label}
-      />
+      <img src={icon} alt={label} />
       <label>
         {label}
         <select value={value} onChange={onChange} name={name}>
@@ -25,6 +23,7 @@ function FilterSelect({ label, options, value, onChange, name, icon }) {
 }
 
 export default function Filters({ filters, setFilters }) {
+  // Update a selected option while preserving all other filter choices.
   const handleSelectionChange = (event, name) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
@@ -32,10 +31,12 @@ export default function Filters({ filters, setFilters }) {
     }));
   };
 
+  // Clear or set one filter field, including when removing its active tag.
   const updateField = (type, value) => {
     setFilters({ ...filters, [type]: value });
   };
 
+  // Render the filter controls and tags corresponding to active selections.
   return (
     <section className="filter">
       <details className="filter-menu">
@@ -76,20 +77,7 @@ export default function Filters({ filters, setFilters }) {
 
           <FilterSelect
             label="Author"
-            options={[
-              "",
-              "Jane Austen",
-              "George Orwell",
-              "Frank Herbert",
-              "J.R.R. Tolkien",
-              "Agatha Christie",
-              "Harper Lee",
-              "Octavia Butler",
-              "Toni Morrison",
-              "Ursula K. Le Guin",
-              "Kazuo Ishiguro",
-              "Emily St. John Mandel",
-            ]}
+            options={["", ...randomData.bookAuthors]}
             value={filters.author}
             onChange={(event) => handleSelectionChange(event, "author")}
             name="author"

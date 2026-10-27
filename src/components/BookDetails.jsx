@@ -11,6 +11,7 @@ const BookDetails = ({
   isOpen,
   children,
 }) => {
+  // Render the book's cover, metadata, optional actions, and nested content.
   return (
     <section className="img__section">
       <img src={book.photo} alt={book.name} />

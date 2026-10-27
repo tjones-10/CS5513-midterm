@@ -12,11 +12,15 @@ export const dynamic = "force-dynamic";
 // export const revalidate = 0;
 
 export default async function Home(props) {
+  // Read query parameters to apply filters during the initial server fetch.
   const searchParams = await props.searchParams;
   // Using seachParams which Next.js provides, allows the filtering to happen on the server-side, for example:
   // ?author=Jane%20Austen&category=Fiction&sort=Review
+  // Use the current request's Firebase identity to access Firestore.
   const { firebaseServerApp } = await getAuthenticatedAppForUser();
+  // Load books matching the requested filters and sorting.
   const books = await getBooks(getFirestore(firebaseServerApp), searchParams);
+  // Pass the initial result set to the live-updating listings component.
   return (
     <main className="main__home">
       <BookListings initialBooks={books} />
